@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap");
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #ffffff;
+}
+@layer utilities {
+  .search-input-border {
+    border-bottom: 2px solid #f29434;
+  }
+  .button-bg {
+    background-color: #f29434;
+  }
+  .header-bg {
+    background-color: #fd5455;
+  }
+  .text-primary {
+    color: #f23534;
+  }
+  .discount-badge {
+    background-color: #fd5455;
+  }
+}
+.custom-swiper .swiper-pagination-bullet {
+  background-color: #f29434;
+  opacity: 0.5;
+}
+.card-text {
+  color: #333;
+}
+.card-text-secondary {
+  color: #666;
+}
+.custom-swiper .swiper-pagination-bullet-active {
+  background-color: #e7000b;
+  opacity: 1;
+}
