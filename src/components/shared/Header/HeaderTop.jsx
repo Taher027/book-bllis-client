@@ -2,6 +2,7 @@ import React from "react";
 import Logo from "./Logo";
 import Container from "../Container";
 import SearchForm from "./SearchForm";
+import { Link } from "react-router";
 
 const HeaderTop = () => {
   return (
@@ -18,7 +19,9 @@ const HeaderTop = () => {
             <div className="flex  items-center justify-between gap-4 ">
               <span>wishlist</span>
               <span>Login</span>
-              <span>Register</span>
+              <Link to={"/dashboard"}>
+                <span>Dashboard</span>
+              </Link>
             </div>
           </div>
         </Container>
