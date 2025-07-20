@@ -1,22 +1,48 @@
-import React, { useState } from "react";
-import { useFormStatus } from "react-dom";
+import { useState } from "react";
 import { BsCurrencyDollar } from "react-icons/bs";
+import uploadImageToImageBB from "../../../uitls/uploadImageTOImageBB";
+import FormSubmitButton from "./FormSubmitButton";
+import toast from "react-hot-toast";
+import { useAddBookMutation } from "../../../redux/features/book/bookApi";
 
 const AddProductForm = () => {
   const [showImage, setShowImage] = useState();
+  const [addBook] = useAddBookMutation();
+  // show uplod image handler
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setShowImage(URL.createObjectURL(file));
     }
   };
-
-  function formAction(formData) {
+  // add book from data handler
+  async function formAction(formData) {
     const data = Object.fromEntries(formData.entries());
-    console.log("Form data submitted:", data);
+    try {
+      const display_url = await uploadImageToImageBB(data.image);
 
-    // Example: handle image separately
-    const image = formData.get("image");
+      const bookData = {
+        title: data?.title,
+        author: data?.author,
+        genre: data?.genre,
+        publication: data?.Publication,
+        imageUrl: display_url,
+        shortDescription: data?.shortDescription,
+        longDescription: data?.description, // fixed case
+        price: Number(data?.price),
+        sellPrice: Number(data?.sellPrice),
+      };
+
+      const res = await addBook(bookData).unwrap();
+      if (res.success === true) {
+        toast.success("Product added successfully");
+      } else {
+        toast.error("Failed to add product");
+      }
+      setShowImage(null);
+    } catch (error) {
+      console.error("Failed to add product:", error);
+    }
   }
   return (
     <div className="flex flex-col p-5">
@@ -47,14 +73,14 @@ const AddProductForm = () => {
             <div className="flex gap-5 ">
               <div className="w-1/2">
                 <label
-                  htmlFor="category"
+                  htmlFor="Genre"
                   className="mb-1 text-sm font-light card-text"
                 >
-                  Category<span className="text-primary font-bold">*</span>
+                  Genre<span className="text-primary font-bold">*</span>
                 </label>
                 <input
                   type="text"
-                  name="Category"
+                  name="genre"
                   required
                   className="w-full px-4 py-2 border border-gray-300 focus:rounded-sm focus:border-2 focus:border-gray-600 focus:outline-none focus:ring-0 transition-all duration-100"
                 />
@@ -114,7 +140,7 @@ const AddProductForm = () => {
                 <span className="text-primary font-bold">*</span>
               </label>
               <textarea
-                name="Description"
+                name="description"
                 required
                 rows={4}
                 className="w-full px-4 py-2 border border-gray-300 focus:rounded-sm focus:border-2 focus:border-gray-600 focus:outline-none focus:ring-0 transition-all duration-100"
@@ -180,15 +206,15 @@ const AddProductForm = () => {
               </div>
             </div>
             {/* iamge show  */}
-            <div className="w-1/2 h-auto mx-auto border-2 border-dotted p-5 content-center text-center">
+            <div className="relative w-1/3 max-w-md mx-auto aspect-square border-gray-300 border-2  border-dotted p-2 flex items-center justify-center">
               {showImage ? (
                 <img
                   src={showImage}
-                  alt=" image upload"
-                  className="w-full h-full object-contain "
+                  alt="Uploaded preview"
+                  className="w-full h-full object-contain"
                 />
               ) : (
-                <span className="text-lg font-medium card text">
+                <span className="text-lg font-medium text-gray-500">
                   Upload Image
                 </span>
               )}
@@ -196,24 +222,10 @@ const AddProductForm = () => {
           </div>
         </div>
         <div className=" w-max px-12">
-          <SubmitButton></SubmitButton>
+          <FormSubmitButton />
         </div>
       </form>
     </div>
   );
 };
-
 export default AddProductForm;
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:opacity-50"
-    >
-      {pending ? "Submitting..." : "Submit Product"}
-    </button>
-  );
-}

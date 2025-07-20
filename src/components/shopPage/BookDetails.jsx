@@ -6,13 +6,11 @@ const BookDetails = ({ book }) => {
     author,
     price,
     sellPrice,
-    description,
-    image,
+    imageUrl,
     publication,
     subject,
     languages,
     shortDescription,
-    longDescription,
   } = book;
 
   const discount = price - sellPrice;
@@ -21,7 +19,7 @@ const BookDetails = ({ book }) => {
     <div className="w-full flex flex-col md:flex-row gap-6 ">
       <div className="w-full flex justify-center md:w-[250px] ">
         <img
-          src={image}
+          src={imageUrl}
           alt="book image"
           className="w-[250px] h-full object-cover"
         />

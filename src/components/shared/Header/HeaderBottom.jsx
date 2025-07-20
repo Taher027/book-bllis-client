@@ -1,21 +1,23 @@
 import Container from "../Container";
 import { NavLink } from "react-router";
 const HeaderBottom = () => {
-  const bookCategories = [
+  const bookGenres = [
     { label: "Home", href: "/" },
-    { label: "Fiction", href: "books/categories/fiction" },
-    { label: "Thriller", href: "books/categories/thriller" },
-    { label: "Mystery", href: "books/categories/Mystery" },
-    { label: "Fantasy", href: "books/categories/fantasy" },
-    { label: "Romance", href: "books/categories/romance" },
-    { label: "Biography", href: "books/categories/biography" },
-    { label: "Self-Help", href: "books/categories/self-help" },
-    { label: "Children's Books", href: "books/categories/children" },
+    { label: "All Books", href: "/books", exact: true },
+    { label: "Fiction", href: "books/fiction" },
+    { label: "Thriller", href: "books/thriller" },
+    { label: "Mystery", href: "books/Mystery" },
+    { label: "Fantasy", href: "books/fantasy" },
+    { label: "Romance", href: "books/romance" },
+    { label: "Biography", href: "books/biography" },
+    { label: "Self-Help", href: "books/self-help" },
+    { label: "Children's Books", href: "books/children" },
   ];
-  const menuItems = bookCategories.map((category) => (
+  const menuItems = bookGenres.map((genre) => (
     <NavLink
-      key={category.label}
-      to={category.href}
+      key={genre.label}
+      to={genre.href}
+      end={genre.exact}
       className={({ isActive }) =>
         `h-full px-4 py-3 text-sm font-medium  flex items-center  whitespace-nowrap  ${
           isActive
@@ -24,7 +26,7 @@ const HeaderBottom = () => {
         }`
       }
     >
-      {category.label}
+      {genre.label}
     </NavLink>
   ));
   return (

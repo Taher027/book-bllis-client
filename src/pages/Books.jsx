@@ -1,55 +1,46 @@
-import React, { useState } from "react";
-import BookAside from "../components/Books/BookAside";
-import { useParams } from "react-router";
-import BookModel from "../assets/data/BookModel";
 import Container from "../components/shared/Container";
 import FilteredBooks from "../components/Books/FilteredBooks";
+import BookAside from "../components/Books/BookAside";
+import { useGetBooksQuery } from "../redux/features/book/bookApi";
+import { useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { setGenre } from "../redux/features/book/bookSlice";
 
 const Books = () => {
-  const params = useParams();
-  const { category } = params;
-  const [checkedAuthors, setCheckedAuthors] = useState([]);
-  const [checkedPublications, setCheckedPublications] = useState([]);
-  const handleAuthorCheck = (e) => {
-    const { value, checked } = e.target;
+  const dispatch = useDispatch();
+  const { genre } = useParams();
 
-    setCheckedAuthors((prev) => {
-      if (checked) {
-        return [...prev, value];
-      } else {
-        return prev.filter((author) => author !== value);
-      }
-    });
-  };
-  const handlePublicationCheck = (e) => {
-    const { checked, value } = e.target;
-    setCheckedPublications((prev) => {
-      if (checked) {
-        return [...prev, value];
-      } else {
-        return prev.filter((publication) => publication !== value);
-      }
-    });
-  };
+  const { bookGenre } = useSelector((state) => state.book);
+
+  const { data, isLoading } = useGetBooksQuery("");
+
+  useEffect(() => {
+    if (genre) {
+      dispatch(setGenre(genre));
+    } else {
+      dispatch(setGenre(""));
+    }
+  }, [genre, dispatch]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  let booksData = data?.data || [];
+  if (bookGenre) {
+    booksData = booksData.filter(
+      (book) => book.genre.toLowerCase() === bookGenre.toLowerCase()
+    );
+  }
 
   return (
     <Container>
       <div className="flex flex-col md:flex-row gap-5 p-5 pt-12">
         <aside className="w-full  md:w-1/3">
-          <BookAside
-            category={category}
-            checkedAuthors={checkedAuthors}
-            handleAuthorCheck={handleAuthorCheck}
-            checkedPublications={checkedPublications}
-            handlePublicationCheck={handlePublicationCheck}
-          />
+          <BookAside />
         </aside>
         <section className="w-full md:w-2/3">
-          <FilteredBooks
-            category={category}
-            checkedAuthors={checkedAuthors}
-            checkedPublications={checkedPublications}
-          />
+          <FilteredBooks booksData={booksData} />
         </section>
       </div>
     </Container>

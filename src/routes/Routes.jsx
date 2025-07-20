@@ -9,12 +9,13 @@ import AddProduct from "../pages/Dashboard/Admin/AddProduct";
 import Orders from "../pages/Dashboard/Admin/Orders";
 import NewOrder from "../pages/Dashboard/Admin/NewOrder";
 import AllProducts from "../pages/Dashboard/Admin/AllProducts";
+import App from "../App";
 
 const routes = createBrowserRouter([
   {
     path: "/",
     errorElement: <ErrorPage />,
-    element: <RootLayout />,
+    element: <App />,
     children: [
       {
         index: true,
@@ -25,11 +26,11 @@ const routes = createBrowserRouter([
         element: <Books />,
       },
       {
-        path: "/books/categories/:category",
+        path: "/books/:genre",
         element: <Books />,
       },
       {
-        path: "/books/category/book/:id",
+        path: "/books/genre/:bookId",
         element: <SingleBookPage />,
       },
     ],

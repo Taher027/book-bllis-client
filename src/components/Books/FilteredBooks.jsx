@@ -1,49 +1,42 @@
-import React, { useEffect, useState } from "react";
-import BookModel from "../../assets/data/BookModel";
-import { Link } from "react-router";
+import { useSelector } from "react-redux";
 import BookProducCard from "./BookProducCard";
 
-const FilteredBooks = ({ category, checkedAuthors, checkedPublications }) => {
-  console.log(checkedAuthors, "checkedAuthors");
+const FilteredBooks = ({ booksData }) => {
+  const { authors, publications } = useSelector((state) => state.book);
 
-  const categoryLower = category && category.toLowerCase();
-  const [books, setBooks] = useState([]);
-  const filterBooks = (books, categoryLower) => {
-    return books.filter(
-      (book) => book.category.toLowerCase() === categoryLower
+  let filteredBooks;
+
+  if (authors.length > 0 || publications.length > 0) {
+    const authorSet = new Set(authors);
+    const publicationSet = new Set(publications);
+    filteredBooks = booksData.filter(
+      (book) =>
+        (authors.length > 0) & authorSet.has(book.author) ||
+        (publications.length > 0 && publicationSet.has(book.publication))
     );
-  };
-  const applyFilter = () => {
-    let filtered = filterBooks(BookModel, categoryLower);
+  } else {
+    filteredBooks = booksData;
+  }
 
-    if (checkedAuthors.length > 0) {
-      filtered = filtered.filter((book) =>
-        checkedAuthors.includes(book.author)
-      );
-    }
-
-    if (checkedPublications.length > 0) {
-      filtered = filtered.filter((book) =>
-        checkedPublications.includes(book.publication)
-      );
-    }
-
-    setBooks(filtered);
-  };
-
-  useEffect(() => {
-    applyFilter();
-  }, [categoryLower, checkedAuthors, checkedPublications]);
-
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-      {books.length > 0 ? (
-        books.map((book) => <BookProducCard key={book.id} book={book} />)
-      ) : (
-        <p>No books found in this category.</p>
-      )}
-    </div>
-  );
+  let content;
+  if (filteredBooks.length > 0) {
+    content = (
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {filteredBooks.map((book) => (
+          <BookProducCard key={book._id} book={book} />
+        ))}
+      </div>
+    );
+  } else {
+    content = (
+      <div>
+        <p className="flex flex-col mt-36 text-xl font-medium">
+          No Books found in this Genry
+        </p>
+      </div>
+    );
+  }
+  return <>{content}</>;
 };
 
 export default FilteredBooks;

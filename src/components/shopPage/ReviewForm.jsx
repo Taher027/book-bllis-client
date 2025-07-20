@@ -16,7 +16,6 @@ const ReviewForm = () => {
   const handleToggleForm = () => {
     setToggleForm((prev) => !prev);
   };
-  console.log("toogleForm", toogleForm);
   const [formState, formAction] = useFormState(handleFormAction, {
     success: false,
   });

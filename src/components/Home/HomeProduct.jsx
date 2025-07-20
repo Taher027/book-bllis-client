@@ -6,15 +6,16 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdArrowBackIos } from "react-icons/md";
-
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
+import { useGetBooksQuery } from "../../redux/features/book/bookApi";
 
 const HomeProduct = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const [showNav, setShowNav] = useState(true);
+  const { data, isLoading, isError } = useGetBooksQuery("");
 
   useEffect(() => {
     const handleResize = () => {
@@ -25,6 +26,20 @@ const HomeProduct = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  let content = null;
+  if (isLoading) {
+    content = <div className="text-center text-gray-500">Loading...</div>;
+  } else if (isError) {
+    content = (
+      <div className="text-center text-red-500">Error loading books</div>
+    );
+  } else if (data?.data?.length > 0) {
+    content = data.data.map((book, index) => (
+      <SwiperSlide key={index}>
+        <HomeProductCard book={book} />
+      </SwiperSlide>
+    ));
+  }
   return (
     <div className="relative w-full">
       {/* swiper custom button for product navigation */}
@@ -83,11 +98,7 @@ const HomeProduct = () => {
         }}
         className="mt-8 "
       >
-        {BookModel.map((book, index) => (
-          <SwiperSlide key={index}>
-            <HomeProductCard book={book} />
-          </SwiperSlide>
-        ))}
+        {content}
       </Swiper>
     </div>
   );

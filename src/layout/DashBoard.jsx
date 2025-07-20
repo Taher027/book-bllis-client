@@ -4,6 +4,7 @@ import Logo from "../components/shared/Header/Logo";
 import { Outlet } from "react-router";
 import Container from "../components/shared/Container";
 import AsideNav from "../components/Dashboard/DasboardNav/AsideNav";
+import { Toaster } from "react-hot-toast";
 
 const DashBoard = () => {
   return (
@@ -14,6 +15,22 @@ const DashBoard = () => {
           <Outlet />
         </div>
       </div>
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "green",
+              color: "white",
+            },
+          },
+          error: {
+            style: {
+              background: "red",
+              color: "white",
+            },
+          },
+        }}
+      />
     </div>
   );
 };

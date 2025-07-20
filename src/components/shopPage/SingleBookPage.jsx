@@ -6,24 +6,26 @@ import BookDetails from "./BookDetails";
 import ReviewForm from "./ReviewForm";
 import Reviews from "./Reviews";
 import MoreProducts from "./MoreProducts";
+import { useGetSingleBookQuery } from "../../redux/features/book/bookApi";
 
 const SingleProduct = () => {
   const params = useParams();
-  const id = params.id;
-  const filterBook = BookModel.filter((book) => book.id === id);
-  console.log(filterBook);
+  const id = params.bookId;
+  console.log(id);
 
+  const { data, isLoading } = useGetSingleBookQuery(id);
+  let content;
+  if (isLoading) {
+    content = <div>Loading...</div>;
+  } else {
+    content = <BookDetails book={data.data} />;
+  }
   return (
     <Container>
       <section className="flex flex-col justify-center md:flex-row md:justify-between gap-4 py-12 ">
         <div className="w-full md:w-2/3 flex flex-col gap-5">
           {/* product details setion  */}
-          <div>
-            {filterBook.length &&
-              filterBook.map((book, index) => {
-                return <BookDetails key={index} book={book} />;
-              })}
-          </div>
+          <div>{content}</div>
           {/* review section  */}
           <div className="w-fll">
             <ReviewForm />

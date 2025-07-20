@@ -15,25 +15,25 @@ const slideImages = [
     id: 1,
     url: banner1,
     alt: "Ocean Beach",
-    link: "books/categories/kurbani",
+    link: "books/thriller",
   },
   {
     id: 2,
     url: banner2,
     alt: "Mountain Landscape",
-    link: "books/categories/kurbani",
+    link: "books/romance",
   },
   {
     id: 3,
     url: banner3,
     alt: "Green Forest",
-    link: "books/categories/kurbani",
+    link: "books/fantasy",
   },
   {
     id: 4,
     url: banner4,
     alt: "City Skyline",
-    link: "books/categories/kurbani",
+    link: "books/fiction",
   },
 ];
 

@@ -2,14 +2,22 @@ import React from "react";
 import { Link } from "react-router";
 
 const MoreProductCard = ({ book }) => {
-  const { id, title, author, image, price, sellPrice, publication } = book;
+  const {
+    _id: id,
+    title,
+    author,
+    imageUrl,
+    price,
+    sellPrice,
+    publication,
+  } = book;
   return (
-    <Link to={`/books/category/book/${id}`}>
+    <Link to={`/books/genre/${id}`}>
       <div className="flex gap-3 border-b-1 border-gray-400 p-4">
         <div className="max-w-16 h-auto flex-shrink-0">
           <img
             className="w-full object-cover"
-            src={image}
+            src={imageUrl}
             alt="product image"
           />
         </div>
