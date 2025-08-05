@@ -3,28 +3,24 @@ import {
   setAuthors,
   setPublications,
 } from "../../redux/features/book/bookSlice";
-import { useGetBooksQuery } from "../../redux/features/book/bookApi";
-const BookAside = () => {
+const BookAside = ({ booksData }) => {
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetBooksQuery();
   const { bookGenre, authors, publications } = useSelector(
     (state) => state.book
   );
   const isAuthorChecked = (author) => authors.includes(author);
   const isPublicationChecked = (publication) =>
     publications.includes(publication);
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  let booksData = data?.data || [];
+
+  let books = booksData;
   if (bookGenre) {
-    booksData = booksData.filter(
+    books = books.filter(
       (book) => book.genre.toLowerCase() === bookGenre.toLowerCase()
     );
   }
-  const uniqueAuthors = [...new Set(booksData.map((book) => book.author))];
+  const uniqueAuthors = [...new Set(books.map((book) => book.author))];
   const uniquePublications = [
-    ...new Set(booksData.map((book) => book.publication)),
+    ...new Set(books.map((book) => book.publication)),
   ];
 
   const handleAuthorChange = (author) => {

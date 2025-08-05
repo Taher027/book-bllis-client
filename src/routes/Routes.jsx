@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import Home from "../pages/Home";
 import RootLayout from "../layout/RootLayout";
-import SingleBookPage from "../components/shopPage/SingleBookPage";
+import BookShopPage from "../components/shopPage/BookShopPage";
 import Books from "../pages/Books";
 import DashBoard from "../layout/DashBoard";
 import ErrorPage from "../pages/ErrorPage";
@@ -31,7 +31,7 @@ const routes = createBrowserRouter([
       },
       {
         path: "/books/genre/:bookId",
-        element: <SingleBookPage />,
+        element: <BookShopPage />,
       },
     ],
   },

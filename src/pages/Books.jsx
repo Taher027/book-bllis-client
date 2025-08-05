@@ -2,18 +2,22 @@ import Container from "../components/shared/Container";
 import FilteredBooks from "../components/Books/FilteredBooks";
 import BookAside from "../components/Books/BookAside";
 import { useGetBooksQuery } from "../redux/features/book/bookApi";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { setGenre } from "../redux/features/book/bookSlice";
+import { useEffect } from "react";
 
 const Books = () => {
   const dispatch = useDispatch();
   const { genre } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  const searchTerm = queryParams.get("searchTerm");
+
+  const { data, isLoading } = useGetBooksQuery({ searchTerm });
 
   const { bookGenre } = useSelector((state) => state.book);
-
-  const { data, isLoading } = useGetBooksQuery("");
 
   useEffect(() => {
     if (genre) {
@@ -32,12 +36,11 @@ const Books = () => {
       (book) => book.genre.toLowerCase() === bookGenre.toLowerCase()
     );
   }
-
   return (
     <Container>
       <div className="flex flex-col md:flex-row gap-5 p-5 pt-12">
         <aside className="w-full  md:w-1/3">
-          <BookAside />
+          <BookAside booksData={booksData} />
         </aside>
         <section className="w-full md:w-2/3">
           <FilteredBooks booksData={booksData} />

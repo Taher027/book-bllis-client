@@ -1,9 +1,19 @@
-import React from "react";
 import { FiSearch } from "react-icons/fi";
+import { useNavigate } from "react-router";
 
 const SearchForm = () => {
+  const navigate = useNavigate();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const searchInputValue = e.target.search.value;
+    const searchUrl = `/books?searchTerm=${searchInputValue}`;
+
+    navigate(searchUrl);
+    e.target.reset();
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="relative w-full overflow-hidden">
         <input
           type="text"

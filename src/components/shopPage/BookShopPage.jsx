@@ -11,7 +11,6 @@ import { useGetSingleBookQuery } from "../../redux/features/book/bookApi";
 const SingleProduct = () => {
   const params = useParams();
   const id = params.bookId;
-  console.log(id);
 
   const { data, isLoading } = useGetSingleBookQuery(id);
   let content;
@@ -33,9 +32,9 @@ const SingleProduct = () => {
           </div>
         </div>
         {/* right side products advertisement  */}
-        <div className="w-full md:w-1/3">
+        <aside className="w-full md:w-1/3">
           <MoreProducts />
-        </div>
+        </aside>
       </section>
     </Container>
   );

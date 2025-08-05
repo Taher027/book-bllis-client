@@ -4,20 +4,25 @@ export const bookApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     addBook: builder.mutation({
       query: (bookData) => ({
-        url: "/products/add-product",
+        url: "/books/add-book",
         method: "POST",
         body: bookData,
       }),
     }),
     getBooks: builder.query({
-      query: () => ({
-        url: "/products",
-        method: "GET",
-      }),
+      query: (params) => {
+        const queryParams = new URLSearchParams();
+        if (params?.searchTerm) {
+          queryParams.append("searchTerm", params.searchTerm);
+          return `/books?${queryParams.toString()}`;
+        } else {
+          return `/books`;
+        }
+      },
     }),
     getSingleBook: builder.query({
       query: (id) => ({
-        url: `/products/${id}`,
+        url: `/books/${id}`,
         method: "GET",
       }),
     }),

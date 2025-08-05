@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router";
+import { calculateDiscount } from "../../uitls/calculateBookDiscount";
 
 const BookProducCard = ({ book }) => {
   const { imageUrl, title, author, price, sellPrice } = book;
-  const discount = price - sellPrice;
-  const discountPercentage = ((discount / price) * 100).toFixed(0);
+  const discount = calculateDiscount(price, sellPrice);
   return (
     <div className="w-full">
       <Link to={`/books/genre/${book._id}`}>
@@ -16,7 +16,7 @@ const BookProducCard = ({ book }) => {
               className="w-full object-cover"
             />
             <div className="w-10 h-10 rounded-full absolute top-0 -left-4 z-50 discount-badge flex items-center justify-center">
-              <span className="text-sm text-white">{discountPercentage}%</span>
+              <span className="text-sm text-white">{discount}%</span>
             </div>
           </div>
           <div className="p-2">

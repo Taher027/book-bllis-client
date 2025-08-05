@@ -1,4 +1,5 @@
 import React from "react";
+import { calculateDiscount } from "../../uitls/calculateBookDiscount";
 
 const BookDetails = ({ book }) => {
   const {
@@ -12,9 +13,9 @@ const BookDetails = ({ book }) => {
     languages,
     shortDescription,
   } = book;
+  console.log(book);
 
-  const discount = price - sellPrice;
-  const discountPercentage = ((discount / price) * 100).toFixed(0);
+  const discount = calculateDiscount(price, sellPrice);
   return (
     <div className="w-full flex flex-col md:flex-row gap-6 ">
       <div className="w-full flex justify-center md:w-[250px] ">
@@ -44,9 +45,7 @@ const BookDetails = ({ book }) => {
           <span className=" card-text-secondary font-thin mb-4 line-through">
             ${price}
           </span>
-          <span className=" text-primary mb-4">
-            ({discountPercentage}% Discount)
-          </span>
+          <span className=" text-primary mb-4">({discount}% Discount)</span>
         </div>
         <div className="flex">
           <button className="button-bg inline text-black/90 px-4 py-2 rounded hover:bg-red-600 hover:text-white transition duration-300">
